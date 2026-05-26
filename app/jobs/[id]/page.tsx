@@ -1,8 +1,8 @@
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, ArrowUpRight, CalendarClock, CheckCircle2, Globe2, MapPin, ShieldCheck } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, CalendarClock, CheckCircle2, Globe2, MapPin } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { CompanyLogo } from "@/components/jobs/company-logo";
 import { SaveJobButton } from "@/components/jobs/save-job-button";
 import { getJobById, getJobs } from "@/services/job.service";
 import { deadlineLabel } from "@/utils/dates";
@@ -30,9 +30,7 @@ export default async function JobDetailsPage({ params }: JobDetailsPageProps) {
 
       <div className="glass rounded-xl p-5 sm:p-8">
         <div className="flex flex-col gap-5 sm:flex-row sm:items-start">
-          <div className="relative h-16 w-16 overflow-hidden rounded-lg bg-white dark:bg-slate-900">
-            {job.companyLogo ? <Image src={job.companyLogo} alt="" fill sizes="64px" className="object-contain p-2" /> : <ShieldCheck className="m-5 h-6 w-6" />}
-          </div>
+          <CompanyLogo src={job.companyLogo} name={job.company} size="md" />
           <div className="min-w-0 flex-1">
             <div className="flex flex-wrap gap-2">
               <Badge tone="emerald">Verified official source</Badge>
@@ -95,11 +93,11 @@ export default async function JobDetailsPage({ params }: JobDetailsPageProps) {
             </a>
             <a
               href={job.sourceUrl}
-              target="_blank"
               rel="noreferrer"
-              className="mt-3 inline-flex h-11 w-full items-center justify-center gap-2 rounded-lg bg-slate-100 px-5 text-sm font-black text-slate-700 transition hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-100"
+              className="mt-3 inline-flex h-11 w-full items-center justify-center gap-2 rounded-lg border border-emerald-300/50 bg-emerald-50 px-5 text-sm font-black text-emerald-800 transition hover:bg-emerald-100 dark:border-emerald-400/25 dark:bg-emerald-400/10 dark:text-emerald-100 dark:hover:bg-emerald-400/15"
             >
               View official source
+              <ArrowUpRight className="h-4 w-4" />
             </a>
           </aside>
         </div>

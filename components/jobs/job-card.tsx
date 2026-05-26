@@ -1,8 +1,8 @@
-import Image from "next/image";
 import Link from "next/link";
-import { ArrowUpRight, CalendarClock, CheckCircle2, MapPin, ShieldCheck } from "lucide-react";
+import { ArrowUpRight, CalendarClock, CheckCircle2, MapPin } from "lucide-react";
 import type { Job } from "@/types/job";
 import { Badge } from "@/components/ui/badge";
+import { CompanyLogo } from "@/components/jobs/company-logo";
 import { SaveJobButton } from "@/components/jobs/save-job-button";
 import { deadlineLabel, isEndingSoon, isNewOpening } from "@/utils/dates";
 
@@ -13,13 +13,7 @@ export function JobCard({ job }: { job: Job }) {
   return (
     <article className="glass group rounded-xl p-5 transition hover:-translate-y-1 hover:shadow-glow">
       <div className="flex items-start gap-4">
-        <div className="relative flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-white dark:bg-slate-900">
-          {job.companyLogo ? (
-            <Image src={job.companyLogo} alt="" fill sizes="48px" className="object-contain p-2" />
-          ) : (
-            <ShieldCheck className="h-5 w-5 text-emerald-600" />
-          )}
-        </div>
+        <CompanyLogo src={job.companyLogo} name={job.company} />
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap gap-2">
             {endingSoon && <Badge tone="rose">Ending soon</Badge>}

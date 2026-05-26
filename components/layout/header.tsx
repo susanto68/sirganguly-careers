@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { BriefcaseBusiness, LayoutDashboard, ShieldCheck } from "lucide-react";
 import { ThemeToggle } from "@/components/layout/theme-toggle";
@@ -13,15 +14,22 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 border-b border-white/50 bg-white/72 backdrop-blur-xl dark:border-white/10 dark:bg-slate-950/70">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
-        <Link href="/" className="flex items-center gap-3">
-          <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-ink text-white dark:bg-white dark:text-ink">
-            <ShieldCheck className="h-5 w-5" />
-          </span>
-          <span>
-            <span className="block text-base font-black leading-tight">CareerTrust AI</span>
-            <span className="hidden text-xs font-semibold text-slate-500 dark:text-slate-400 sm:block">Verified student opportunities</span>
-          </span>
-        </Link>
+        <div className="flex min-w-0 items-center gap-3">
+          <Link href="/" className="flex min-w-0 items-center gap-3">
+            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-ink text-white dark:bg-white dark:text-ink">
+              <ShieldCheck className="h-5 w-5" />
+            </span>
+            <span className="min-w-0">
+              <span className="block truncate text-base font-black leading-tight">CareerTrust AI</span>
+              <span className="mt-0.5 flex items-center gap-1.5 text-[11px] font-black leading-none text-slate-600 dark:text-slate-300">
+                <span className="relative h-5 w-5 shrink-0 overflow-hidden rounded-full bg-slate-200 ring-1 ring-white dark:bg-slate-700 dark:ring-white/20">
+                  <Image src="/sir-ganguly.png" alt="Sir Ganguly" fill sizes="20px" className="object-cover" priority />
+                </span>
+                <span className="truncate">Created by Sir Ganguly</span>
+              </span>
+            </span>
+          </Link>
+        </div>
 
         <nav className="hidden items-center gap-1 md:flex">
           {nav.map((item) => (
