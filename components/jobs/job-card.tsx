@@ -11,7 +11,7 @@ export function JobCard({ job }: { job: Job }) {
   const newOpening = isNewOpening(job.openedAt);
 
   return (
-    <article className="glass group rounded-xl p-5 transition hover:-translate-y-1 hover:shadow-glow">
+    <article className="group rounded-xl border border-white/70 bg-[linear-gradient(135deg,_rgba(255,255,255,0.92),_rgba(240,253,250,0.78)_48%,_rgba(239,246,255,0.82))] p-5 shadow-soft backdrop-blur-xl transition hover:-translate-y-1 hover:shadow-glow dark:border-white/10 dark:bg-[linear-gradient(135deg,_rgba(15,23,42,0.9),_rgba(12,74,110,0.44)_48%,_rgba(49,46,129,0.34))]">
       <div className="flex items-start gap-4">
         <CompanyLogo src={job.companyLogo} name={job.company} />
         <div className="min-w-0 flex-1">
@@ -57,7 +57,7 @@ export function JobCard({ job }: { job: Job }) {
       <div className="mt-5 flex flex-col gap-3 sm:flex-row">
         <Link
           href={`/jobs/${job.id}`}
-          className="inline-flex h-11 flex-1 items-center justify-center rounded-lg bg-ink px-4 text-sm font-bold text-white transition hover:bg-slate-800 dark:bg-white dark:text-ink"
+          className="inline-flex h-11 flex-1 items-center justify-center rounded-lg bg-slate-900 px-4 text-sm font-bold text-white transition hover:bg-slate-800 dark:bg-white dark:text-ink"
         >
           View details
         </Link>

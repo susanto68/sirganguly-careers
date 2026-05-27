@@ -1,7 +1,7 @@
-import Image from "next/image";
 import Link from "next/link";
 import type { Company } from "@/types/company";
 import { Badge } from "@/components/ui/badge";
+import { CompanyLogo } from "@/components/jobs/company-logo";
 
 export function CompanyStrip({ companies }: { companies: Company[] }) {
   return (
@@ -16,9 +16,7 @@ export function CompanyStrip({ companies }: { companies: Company[] }) {
         {companies.map((company) => (
           <Link key={company.id} href={`/company/${company.slug}`} className="glass rounded-xl p-5 transition hover:-translate-y-1 hover:shadow-glow">
             <div className="flex items-center gap-4">
-              <div className="relative h-12 w-12 overflow-hidden rounded-lg bg-white dark:bg-slate-900">
-                <Image src={company.logo} alt="" fill sizes="48px" className="object-contain p-2" />
-              </div>
+              <CompanyLogo src={company.logo} name={company.name} size="md" />
               <div>
                 <h3 className="font-black">{company.name}</h3>
                 <Badge tone={company.category === "Government" ? "amber" : "emerald"}>{company.category}</Badge>

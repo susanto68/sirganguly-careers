@@ -1,8 +1,8 @@
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowUpRight, CheckCircle2, MapPin } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { CompanyLogo } from "@/components/jobs/company-logo";
 import { JobGrid } from "@/components/jobs/job-grid";
 import { getCompanies, getCompanyBySlug } from "@/services/company.service";
 import { getJobsByCompany } from "@/services/job.service";
@@ -28,9 +28,7 @@ export default async function CompanyPage({ params }: CompanyPageProps) {
       <div className="glass rounded-xl p-5 sm:p-8">
         <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
           <div className="flex items-start gap-5">
-            <div className="relative h-20 w-20 overflow-hidden rounded-xl bg-white dark:bg-slate-900">
-              <Image src={company.logo} alt="" fill sizes="80px" className="object-contain p-3" />
-            </div>
+            <CompanyLogo src={company.logo} name={company.name} size="lg" />
             <div>
               <Badge tone={company.category === "Government" ? "amber" : "emerald"}>{company.category}</Badge>
               <h1 className="mt-3 text-4xl font-black">{company.name}</h1>
