@@ -67,7 +67,7 @@ export function JobCard({ job }: { job: Job }) {
       <div className="mt-5 flex flex-col gap-3 sm:flex-row">
         <Link
           href={`/jobs/${job.id}`}
-          className="inline-flex h-11 flex-1 items-center justify-center rounded-lg bg-slate-900 px-4 text-sm font-bold text-white transition hover:bg-slate-800 dark:bg-white dark:text-ink"
+          className="btn-3d-slate inline-flex h-11 flex-1 items-center justify-center rounded-lg px-4 text-sm font-bold text-white"
         >
           View details
         </Link>
@@ -75,7 +75,7 @@ export function JobCard({ job }: { job: Job }) {
           href={job.officialApplyUrl}
           target="_blank"
           rel="noreferrer"
-          className="inline-flex h-11 flex-1 items-center justify-center gap-2 rounded-lg bg-emerald-600 px-4 text-sm font-bold text-white transition hover:bg-emerald-700"
+          className="btn-3d-emerald inline-flex h-11 flex-1 items-center justify-center gap-2 rounded-lg px-4 text-sm font-bold text-white"
         >
           Apply official
           <ArrowUpRight className="h-4 w-4" />

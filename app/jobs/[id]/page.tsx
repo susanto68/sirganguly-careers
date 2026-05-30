@@ -114,7 +114,7 @@ export default async function JobDetailsPage({ params }: JobDetailsPageProps) {
               href={job.officialApplyUrl}
               target="_blank"
               rel="noreferrer"
-              className="mt-5 inline-flex h-12 w-full items-center justify-center gap-2 rounded-lg bg-emerald-600 px-5 font-black text-white transition hover:bg-emerald-700"
+              className="btn-3d-emerald mt-5 inline-flex h-12 w-full items-center justify-center gap-2 rounded-lg px-5 font-black text-white"
             >
               Apply Now
               <ArrowUpRight className="h-4 w-4" />
@@ -122,7 +122,7 @@ export default async function JobDetailsPage({ params }: JobDetailsPageProps) {
             <a
               href={job.sourceUrl}
               rel="noreferrer"
-              className="mt-3 inline-flex h-11 w-full items-center justify-center gap-2 rounded-lg border border-emerald-300/50 bg-emerald-50 px-5 text-sm font-black text-emerald-800 transition hover:bg-emerald-100 dark:border-emerald-400/25 dark:bg-emerald-400/10 dark:text-emerald-100 dark:hover:bg-emerald-400/15"
+              className="btn-3d-white mt-3 inline-flex h-11 w-full items-center justify-center gap-2 rounded-lg px-5 text-sm font-black text-slate-800"
             >
               View official source
               <ArrowUpRight className="h-4 w-4" />
