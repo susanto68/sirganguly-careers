@@ -17,9 +17,14 @@ export function Header() {
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
         <div className="flex min-w-0 items-center gap-3">
           <Link href="/" className="flex min-w-0 items-center gap-3">
-            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-ink text-white dark:bg-white dark:text-ink">
-              <ShieldCheck className="h-5 w-5" />
-            </span>
+            <div className="flex flex-col items-center shrink-0">
+              <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-ink text-white dark:bg-white dark:text-ink">
+                <ShieldCheck className="h-5 w-5" />
+              </span>
+              <span className="text-[8px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest mt-1 text-center select-none leading-none">
+                Back to home
+              </span>
+            </div>
             <span className="min-w-0">
               <span className="block truncate text-base font-black leading-tight">CareerTrust AI</span>
               <span className="mt-0.5 flex items-center gap-1.5 text-[11px] font-black leading-none text-slate-600 dark:text-slate-300">
