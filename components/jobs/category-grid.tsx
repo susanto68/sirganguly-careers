@@ -18,11 +18,15 @@ export function CategoryGrid() {
         {categorySlugs.map((category, index) => {
           const Icon = icons[index] ?? Laptop;
           return (
-            <Link key={category.slug} href={`/category/${category.slug}`} className="glass flex items-center gap-4 rounded-xl p-4 transition hover:-translate-y-1 hover:shadow-glow">
-              <span className="flex h-12 w-12 items-center justify-center rounded-lg bg-white text-ink dark:bg-slate-900 dark:text-white">
+            <Link 
+              key={category.slug} 
+              href={`/category/${category.slug}`} 
+              className="flex items-center gap-4 rounded-xl p-4 bg-[linear-gradient(135deg,_rgba(16,185,129,0.12)_0%,_rgba(253,224,71,0.12)_50%,_rgba(255,255,255,0.95)_100%)] border border-emerald-500/20 shadow-soft dark:bg-[linear-gradient(135deg,_rgba(6,78,59,0.35)_0%,_rgba(113,63,18,0.15)_50%,_rgba(15,23,42,0.85)_100%)] dark:border-white/10 transition hover:-translate-y-1 hover:shadow-glow"
+            >
+              <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-emerald-600 text-white border-t border-white/25 shadow-md">
                 <Icon className="h-5 w-5" />
               </span>
-              <span className="font-black">{category.label}</span>
+              <span className="font-black text-slate-800 dark:text-white">{category.label}</span>
             </Link>
           );
         })}
