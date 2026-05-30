@@ -9,7 +9,7 @@ function mapDatabaseJob(row: Record<string, unknown>): Job {
     title: String(row.title),
     companyId: String(row.company_id ?? ""),
     company: String(row.company_name ?? row.company ?? "Verified source"),
-    companyLogo: String(row.company_logo ?? ""),
+    companyLogo: String(row.company_logo ?? row.logo ?? "") || (row.source_domain ? `https://logo.clearbit.com/${String(row.source_domain)}` : ""),
     companySlug: String(row.company_slug ?? ""),
     sourceUrl: String(row.source_url),
     officialApplyUrl: String(row.official_apply_url),

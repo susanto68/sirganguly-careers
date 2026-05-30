@@ -36,7 +36,7 @@ export async function runAgentPipeline(): Promise<AgentPipelineResult> {
       title: opportunity.title,
       companyId: company?.id ?? verification.normalizedDomain,
       company: opportunity.company,
-      companyLogo: company?.logo ?? "",
+      companyLogo: company?.logo || `https://logo.clearbit.com/${verification.normalizedDomain}`,
       companySlug: company?.slug ?? verification.normalizedDomain.replace(/\./g, "-"),
       sourceUrl: opportunity.sourceUrl,
       officialApplyUrl: opportunity.officialApplyUrl,
