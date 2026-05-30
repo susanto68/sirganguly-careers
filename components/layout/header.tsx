@@ -7,6 +7,7 @@ const nav = [
   { href: "/jobs", label: "Jobs" },
   { href: "/category/government-jobs", label: "Government" },
   { href: "/category/internship", label: "Internships" },
+  { href: "/assistant", label: "AI Assistant" },
   { href: "/dashboard", label: "Dashboard" }
 ];
 

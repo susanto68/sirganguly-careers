@@ -4,22 +4,32 @@ import type { Job } from "@/types/job";
 import { Badge } from "@/components/ui/badge";
 import { CompanyLogo } from "@/components/jobs/company-logo";
 import { SaveJobButton } from "@/components/jobs/save-job-button";
-import { deadlineLabel, isEndingSoon, isNewOpening } from "@/utils/dates";
+import { deadlineLabel, getFreshnessLabel, isEndingSoon, isNewOpening } from "@/utils/dates";
 
 export function JobCard({ job }: { job: Job }) {
   const endingSoon = isEndingSoon(job.deadline);
   const newOpening = isNewOpening(job.openedAt);
+  const recJob = job as { relevanceScore?: number; matchType?: "Best Match" | "Good Match" | "Recommended" };
 
   return (
     <article className="group rounded-xl border border-white/70 bg-[linear-gradient(135deg,_rgba(255,255,255,0.92),_rgba(240,253,250,0.78)_48%,_rgba(239,246,255,0.82))] p-5 shadow-soft backdrop-blur-xl transition hover:-translate-y-1 hover:shadow-glow dark:border-white/10 dark:bg-[linear-gradient(135deg,_rgba(15,23,42,0.9),_rgba(12,74,110,0.44)_48%,_rgba(49,46,129,0.34))]">
       <div className="flex items-start gap-4">
         <CompanyLogo src={job.companyLogo} name={job.company} />
         <div className="min-w-0 flex-1">
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             {endingSoon && <Badge tone="rose">Ending soon</Badge>}
             {newOpening && <Badge tone="emerald">New</Badge>}
             <Badge tone="sky">{job.confidenceScore}% verified</Badge>
+            {recJob.matchType && (
+              <Badge tone={recJob.matchType === "Best Match" ? "violet" : recJob.matchType === "Good Match" ? "emerald" : "sky"}>
+                {recJob.matchType} ({recJob.relevanceScore}%)
+              </Badge>
+            )}
+            <span className="text-[11px] font-bold text-slate-500 dark:text-slate-400 ml-1">
+              {getFreshnessLabel(job.lastCheckedAt)}
+            </span>
           </div>
+
           <Link href={`/jobs/${job.id}`} className="mt-3 block">
             <h3 className="text-lg font-black leading-tight text-ink transition group-hover:text-emerald-700 dark:text-white">
               {job.title}

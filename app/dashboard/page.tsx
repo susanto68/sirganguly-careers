@@ -15,6 +15,7 @@ import {
   UserRoundCheck
 } from "lucide-react";
 import { JobGrid } from "@/components/jobs/job-grid";
+import { DashboardRecommender } from "@/components/dashboard/dashboard-recommender";
 import { getBackendStatus } from "@/services/backend-status.service";
 import { getJobs } from "@/services/job.service";
 import { buildJobNotifications } from "@/services/notification.service";
@@ -29,7 +30,6 @@ const statusStyles = [
 
 export default async function DashboardPage() {
   const [jobs, backend] = await Promise.all([getJobs(), getBackendStatus()]);
-  const recommendations = jobs.filter((job) => job.fresher).slice(0, 6);
   const urgentJobs = jobs.filter((job) => isEndingSoon(job.deadline)).slice(0, 4);
   const internships = jobs.filter((job) => job.categories.includes("Internship")).slice(0, 4);
   const governmentJobs = jobs.filter((job) => job.categories.includes("Government")).slice(0, 4);
@@ -155,13 +155,7 @@ export default async function DashboardPage() {
 
       <div className="mt-10 grid gap-8">
         <div>
-          <div className="mb-5 flex items-end justify-between gap-4">
-            <div>
-              <p className="text-sm font-black uppercase tracking-[0.2em] text-emerald-700 dark:text-emerald-300">Freshers first</p>
-              <h2 className="mt-2 text-3xl font-black">Best student-friendly picks</h2>
-            </div>
-          </div>
-          <JobGrid jobs={recommendations} />
+          <DashboardRecommender jobs={jobs} />
         </div>
 
         <div className="grid gap-8 lg:grid-cols-2">

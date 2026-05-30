@@ -21,8 +21,36 @@ export default async function JobDetailsPage({ params }: JobDetailsPageProps) {
   const job = await getJobById(id);
   if (!job) notFound();
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "JobPosting",
+    "title": job.title,
+    "description": job.aiSummary || job.eligibility,
+    "datePosted": job.openedAt,
+    "validThrough": job.deadline,
+    "employmentType": job.jobType === "Internship" ? "INTERN" : "FULL_TIME",
+    "hiringOrganization": {
+      "@type": "Organization",
+      "name": job.company,
+      "sameAs": job.officialApplyUrl,
+      "logo": job.companyLogo
+    },
+    "jobLocation": {
+      "@type": "Place",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": job.location,
+        "addressCountry": job.country
+      }
+    }
+  };
+
   return (
     <section className="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <Link href="/jobs" className="mb-6 inline-flex items-center gap-2 text-sm font-bold text-slate-600 hover:text-emerald-700 dark:text-slate-300">
         <ArrowLeft className="h-4 w-4" />
         Back to jobs

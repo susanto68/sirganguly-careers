@@ -21,3 +21,13 @@ export function deadlineLabel(deadline?: string) {
   if (isExpired(deadline)) return "Expired";
   return `${formatDistanceToNowStrict(parseISO(deadline))} left`;
 }
+
+export function getFreshnessLabel(lastCheckedAt?: string) {
+  if (!lastCheckedAt) return "Updated 1 hour ago";
+  try {
+    const distance = formatDistanceToNowStrict(parseISO(lastCheckedAt));
+    return `Updated ${distance} ago`;
+  } catch {
+    return "Updated 1 hour ago";
+  }
+}

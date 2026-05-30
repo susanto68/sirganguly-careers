@@ -1,12 +1,14 @@
 import type { RawOpportunity } from "@/types/agent";
-import { trustedSourceRegistry } from "@/lib/source-registry";
+import { fetchLiveAggregatedJobs } from "@/services/aggregation.service";
 
 export async function runSearchAgent(): Promise<RawOpportunity[]> {
-  return trustedSourceRegistry.slice(0, 6).map((source) => ({
-    title: `${source.name} verified careers source`,
-    company: source.name,
-    url: source.url,
-    sourceDomain: source.domain,
-    rawText: `Official ${source.type} opportunity source from ${source.name}.`
+  const liveJobs = await fetchLiveAggregatedJobs();
+  return liveJobs.map((job) => ({
+    title: job.title,
+    company: job.company,
+    url: job.officialApplyUrl,
+    sourceDomain: job.sourceDomain,
+    rawText: JSON.stringify(job)
   }));
 }
+
