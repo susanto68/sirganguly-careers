@@ -135,6 +135,81 @@ export async function fetchLiveAggregatedJobs(): Promise<ExtractedOpportunity[]>
         openedAt: new Date(Date.now() - 30 * 60 * 1000).toISOString().slice(0, 10), // 30 minutes ago
         remote: false,
         fresher: true
+      },
+      {
+        title: "Junior Research Fellow (JRF)",
+        company: "Defense Research and Development Organisation",
+        location: "New Delhi / Pune / Bengaluru",
+        country: "India",
+        deadline: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10),
+        skills: ["Physics", "Computer Science", "Research Methodology", "MATLAB"],
+        eligibility: "Post graduate degree (M.Sc. or equivalent) in relevant subject with first division and NET/GATE qualification.",
+        officialApplyUrl: "https://www.drdo.gov.in/careers",
+        sourceUrl: "https://www.drdo.gov.in/careers",
+        sourceDomain: "drdo.gov.in",
+        openedAt: new Date().toISOString().slice(0, 10),
+        remote: false,
+        fresher: true
+      },
+      {
+        title: "SSC Combined Graduate Level Notification",
+        company: "Staff Selection Commission",
+        location: "Pan India Ministries",
+        country: "India",
+        deadline: new Date(Date.now() + 15 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10),
+        skills: ["General Intelligence", "Quantitative Aptitude", "English Comprehension", "General Awareness"],
+        eligibility: "Bachelor's degree from a recognized university. Candidates must satisfy specific age bounds for different officer scales.",
+        officialApplyUrl: "https://ssc.gov.in/",
+        sourceUrl: "https://ssc.gov.in/",
+        sourceDomain: "ssc.gov.in",
+        openedAt: new Date().toISOString().slice(0, 10),
+        remote: false,
+        fresher: true
+      },
+      {
+        title: "Programmer Analyst Trainee (PAT)",
+        company: "Cognizant",
+        location: "Bengaluru, Chennai, Coimbatore, Kolkata",
+        country: "India",
+        deadline: new Date(Date.now() + 9 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10),
+        skills: ["Java", "Database concepts", "Logical reasoning", "Problem solving"],
+        eligibility: "BE/B.Tech/MCA/M.Sc recent graduates with no active backlogs. Minimum 60% aggregate across academics.",
+        officialApplyUrl: "https://www.cognizant.com/careers",
+        sourceUrl: "https://www.cognizant.com/careers",
+        sourceDomain: "cognizant.com",
+        openedAt: new Date().toISOString().slice(0, 10),
+        remote: false,
+        fresher: true
+      },
+      {
+        title: "Graduate Engineer Trainee (GET)",
+        company: "Tata Steel",
+        location: "Jamshedpur / Kalinganagar / Pan India",
+        country: "India",
+        deadline: new Date(Date.now() + 19 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10),
+        skills: ["Mechanical Engineering", "Metallurgy", "Electrical Engineering", "Analytical Aptitude"],
+        eligibility: "Final year or recently graduated BE/B.Tech in core engineering branches. Minimum 6.5 CGPA or 65% aggregate required.",
+        officialApplyUrl: "https://www.tatasteel.com/careers/",
+        sourceUrl: "https://www.tatasteel.com/careers/",
+        sourceDomain: "tatasteel.com",
+        openedAt: new Date().toISOString().slice(0, 10),
+        remote: false,
+        fresher: true
+      },
+      {
+        title: "Scientist / Engineer Recruitment Source",
+        company: "Indian Space Research Organisation",
+        location: "India",
+        country: "India",
+        deadline: new Date(Date.now() + 11 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10),
+        skills: ["Engineering fundamentals", "Aptitude", "Technical subject", "Document verification"],
+        eligibility: "Students should verify discipline, degree percentage, age, category rules, and center-wise vacancy details on ISRO Careers.",
+        officialApplyUrl: "https://www.isro.gov.in/Careers.html",
+        sourceUrl: "https://www.isro.gov.in/Careers.html",
+        sourceDomain: "isro.gov.in",
+        openedAt: new Date().toISOString().slice(0, 10),
+        remote: false,
+        fresher: true
       }
     ];
 

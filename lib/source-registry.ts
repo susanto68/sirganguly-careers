@@ -192,6 +192,54 @@ export const trustedCompanies: Company[] = [
     category: "Government",
     headquarters: "Bengaluru, India",
     description: "Official ISRO careers source for scientist, engineer, technical, and apprentice recruitment notices."
+  },
+  {
+    id: "company-drdo",
+    name: "Defense Research and Development Organisation",
+    slug: "drdo",
+    logo: "https://logo.clearbit.com/drdo.gov.in",
+    careerUrl: "https://www.drdo.gov.in/careers",
+    domain: "drdo.gov.in",
+    verified: true,
+    category: "Government",
+    headquarters: "New Delhi, India",
+    description: "Premier defense research organisation recruiting scientists, engineers, and apprentices."
+  },
+  {
+    id: "company-ssc",
+    name: "Staff Selection Commission",
+    slug: "ssc",
+    logo: "https://logo.clearbit.com/ssc.gov.in",
+    careerUrl: "https://ssc.gov.in/",
+    domain: "ssc.gov.in",
+    verified: true,
+    category: "Government",
+    headquarters: "New Delhi, India",
+    description: "Official public recruitment commission for staffing government ministries and offices."
+  },
+  {
+    id: "company-cognizant",
+    name: "Cognizant",
+    slug: "cognizant",
+    logo: "https://logo.clearbit.com/cognizant.com",
+    careerUrl: "https://www.cognizant.com/careers",
+    domain: "cognizant.com",
+    verified: true,
+    category: "Private",
+    headquarters: "Teaneck, United States",
+    description: "Multinational IT corporation offering consulting, engineering, and graduate pathways."
+  },
+  {
+    id: "company-tatasteel",
+    name: "Tata Steel",
+    slug: "tata-steel",
+    logo: "https://logo.clearbit.com/tatasteel.com",
+    careerUrl: "https://www.tatasteel.com/careers/",
+    domain: "tatasteel.com",
+    verified: true,
+    category: "Private",
+    headquarters: "Jamshedpur, India",
+    description: "Leading global steel manufacturer with core engineering graduate engineer trainee roles."
   }
 ];
 
