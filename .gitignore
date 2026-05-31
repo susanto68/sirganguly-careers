@@ -10,3 +10,6 @@ coverage
 *.log
 *.tsbuildinfo
 qa-*.png
+
+.vercel
+.env*.local
