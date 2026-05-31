@@ -72,6 +72,76 @@ export async function fetchLiveAggregatedJobs(): Promise<ExtractedOpportunity[]>
     }
   }
 
+  // Fetch from Remotive API (Remote Jobs)
+  try {
+    const controller = new AbortController();
+    const id = setTimeout(() => controller.abort(), 4500);
+    const response = await fetch("https://remotive.com/api/remote-jobs?limit=50", {
+      signal: controller.signal,
+      headers: { "User-Agent": "CareerTrustAI/1.0" }
+    });
+    clearTimeout(id);
+
+    if (response.ok) {
+      const data = await response.json();
+      const remotiveJobs = data.jobs || [];
+      for (const rj of remotiveJobs) {
+        aggregated.push({
+          title: String(rj.title).length > 80 ? String(rj.title).slice(0, 77) + "..." : String(rj.title),
+          company: String(rj.company_name),
+          location: String(rj.candidate_required_location || "Remote"),
+          country: "International",
+          deadline: new Date(Date.now() + 25 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10),
+          skills: rj.category ? [String(rj.category)] : ["Software Development", "System Operations"],
+          eligibility: "Verify specific tech stack, timezone limits, and work permit criteria on the official Remotive apply page.",
+          officialApplyUrl: String(rj.url),
+          sourceUrl: String(rj.url),
+          sourceDomain: "remotive.com",
+          openedAt: rj.publication_date ? String(rj.publication_date).slice(0, 10) : new Date().toISOString().slice(0, 10),
+          remote: true,
+          fresher: true
+        });
+      }
+    }
+  } catch (error) {
+    console.error("Remotive fetch error:", error);
+  }
+
+  // Fetch from Arbeitnow API (Tech & Startup Jobs)
+  try {
+    const controller = new AbortController();
+    const id = setTimeout(() => controller.abort(), 4500);
+    const response = await fetch("https://www.arbeitnow.com/api/job-board-api", {
+      signal: controller.signal,
+      headers: { "User-Agent": "CareerTrustAI/1.0" }
+    });
+    clearTimeout(id);
+
+    if (response.ok) {
+      const payload = await response.json();
+      const listings = payload.data || [];
+      for (const item of listings) {
+        aggregated.push({
+          title: String(item.title).length > 80 ? String(item.title).slice(0, 77) + "..." : String(item.title),
+          company: String(item.company_name),
+          location: String(item.location || "Berlin"),
+          country: "Europe / Remote",
+          deadline: new Date(Date.now() + 20 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10),
+          skills: Array.isArray(item.tags) ? item.tags.slice(0, 4) : ["Technology", "Software development"],
+          eligibility: "Verify specific software engineering, technical skills, and language requisites on the official Arbeitnow listing.",
+          officialApplyUrl: String(item.url),
+          sourceUrl: String(item.url),
+          sourceDomain: "arbeitnow.com",
+          openedAt: new Date().toISOString().slice(0, 10),
+          remote: Boolean(item.remote),
+          fresher: true
+        });
+      }
+    }
+  } catch (error) {
+    console.error("Arbeitnow fetch error:", error);
+  }
+
   // Decoupled caching/generation layer for high performance & fallback support
   // This supplies dynamic high-quality recent jobs from verified domains when live XML feeds are rate-limited or offline.
   if (aggregated.length === 0) {
