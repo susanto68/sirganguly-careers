@@ -1,5 +1,6 @@
 import { createSupabaseAdminClient } from "@/supabase/admin";
 import { Sparkles } from "lucide-react";
+import { VisitorCounter } from "@/components/analytics/visitor-counter";
 import { getFreshnessLabel } from "@/utils/dates";
 
 async function getLastSyncTime(): Promise<string> {
@@ -46,7 +47,7 @@ export async function TopBanner() {
   });
 
   return (
-    <div className="relative bg-gradient-to-r from-emerald-800 via-teal-900 to-cyan-950 text-white py-3 px-4 text-center text-xs font-bold tracking-wide shadow-glow flex flex-col sm:flex-row items-center justify-center gap-3 overflow-hidden border-b border-white/10">
+    <div className="relative flex min-h-[58px] flex-col items-center justify-center gap-3 overflow-hidden border-b border-white/10 bg-gradient-to-r from-emerald-800 via-teal-900 to-cyan-950 px-4 py-3 pl-[118px] text-center text-xs font-bold tracking-wide text-white shadow-glow sm:min-h-[44px] sm:flex-row sm:pl-[150px] lg:pl-4">
       <style dangerouslySetInnerHTML={{ __html: `
         @keyframes custom-blink {
           0%, 100% { opacity: 1; }
@@ -71,6 +72,10 @@ export async function TopBanner() {
           box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
         }
       `}} />
+
+      <div className="absolute left-1 top-1 z-20 origin-top-left scale-[0.62] sm:left-2 sm:top-1/2 sm:-translate-y-1/2 sm:scale-[0.72] lg:scale-[0.78]">
+        <VisitorCounter variant="compact" />
+      </div>
 
       <div className="flex items-center justify-center gap-2">
         <Sparkles className="h-4 w-4 text-yellow-300 animate-pulse shrink-0" />
