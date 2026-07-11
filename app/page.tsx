@@ -7,6 +7,7 @@ import { JobGrid } from "@/components/jobs/job-grid";
 import { HeroSearch } from "@/components/search/hero-search";
 import { DashboardPreview } from "@/components/dashboard/dashboard-preview";
 import { TrustStrip } from "@/components/trust/trust-strip";
+import { VisitorCounter } from "@/components/analytics/visitor-counter";
 import { getCompanies } from "@/services/company.service";
 import { getJobs } from "@/services/job.service";
 import { isEndingSoon, isNewOpening } from "@/utils/dates";
@@ -96,6 +97,7 @@ export default async function HomePage() {
       </section>
 
       <TrustStrip />
+      <VisitorCounter />
       <CategoryGrid />
 
       <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
