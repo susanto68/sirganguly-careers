@@ -1,11 +1,11 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, ArrowUpRight, CalendarClock, CheckCircle2, Globe2, MapPin } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, CalendarClock, CalendarDays, CheckCircle2, Globe2, MapPin } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { CompanyLogo } from "@/components/jobs/company-logo";
 import { SaveJobButton } from "@/components/jobs/save-job-button";
 import { getJobById, getJobs } from "@/services/job.service";
-import { deadlineLabel } from "@/utils/dates";
+import { deadlineLabel, isNewOpening, openingDateLabel } from "@/utils/dates";
 
 type JobDetailsPageProps = {
   params: Promise<{ id: string }>;
@@ -29,12 +29,11 @@ export default async function JobDetailsPage({ params }: JobDetailsPageProps) {
     "datePosted": job.openedAt,
     "validThrough": job.deadline,
     "employmentType": job.jobType === "Internship" ? "INTERN" : "FULL_TIME",
-    "hiringOrganization": {
-      "@type": "Organization",
-      "name": job.company,
-      "sameAs": job.officialApplyUrl,
-      "logo": job.companyLogo
-    },
+      "hiringOrganization": {
+        "@type": "Organization",
+        "name": job.company,
+        "sameAs": job.officialApplyUrl
+      },
     "jobLocation": {
       "@type": "Place",
       "address": {
@@ -58,11 +57,12 @@ export default async function JobDetailsPage({ params }: JobDetailsPageProps) {
 
       <div className="glass rounded-xl p-5 sm:p-8">
         <div className="flex flex-col gap-5 sm:flex-row sm:items-start">
-          <CompanyLogo src={job.companyLogo} name={job.company} size="md" />
+          <CompanyLogo name={job.company} size="md" />
           <div className="min-w-0 flex-1">
             <div className="flex flex-wrap gap-2">
               <Badge tone="emerald">Verified official source</Badge>
               <Badge tone="sky">{job.confidenceScore}% confidence</Badge>
+              {isNewOpening(job.openedAt) && <Badge tone="emerald">New opening</Badge>}
               {job.fresher && <Badge tone="violet">Fresher friendly</Badge>}
             </div>
             <h1 className="mt-4 text-3xl font-black leading-tight sm:text-5xl">{job.title}</h1>
@@ -74,7 +74,7 @@ export default async function JobDetailsPage({ params }: JobDetailsPageProps) {
           <SaveJobButton jobId={job.id} />
         </div>
 
-        <div className="mt-8 grid gap-4 sm:grid-cols-3">
+        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <div className="rounded-lg bg-white p-4 dark:bg-slate-900">
             <MapPin className="h-5 w-5 text-coral" />
             <div className="mt-3 text-sm font-semibold text-slate-500">Location</div>
@@ -84,6 +84,11 @@ export default async function JobDetailsPage({ params }: JobDetailsPageProps) {
             <CalendarClock className="h-5 w-5 text-rose-600" />
             <div className="mt-3 text-sm font-semibold text-slate-500">Deadline</div>
             <div className="font-black">{deadlineLabel(job.deadline)}</div>
+          </div>
+          <div className="rounded-lg bg-white p-4 dark:bg-slate-900">
+            <CalendarDays className="h-5 w-5 text-emerald-600" />
+            <div className="mt-3 text-sm font-semibold text-slate-500">Opening date</div>
+            <div className="font-black">{openingDateLabel(job.openedAt).replace("Opened ", "")}</div>
           </div>
           <div className="rounded-lg bg-white p-4 dark:bg-slate-900">
             <Globe2 className="h-5 w-5 text-emerald-600" />

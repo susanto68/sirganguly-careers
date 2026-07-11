@@ -28,7 +28,7 @@ export default async function CompanyPage({ params }: CompanyPageProps) {
       <div className="glass rounded-xl p-5 sm:p-8">
         <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
           <div className="flex items-start gap-5">
-            <CompanyLogo src={company.logo} name={company.name} size="lg" />
+            <CompanyLogo name={company.name} size="lg" />
             <div>
               <Badge tone={company.category === "Government" ? "amber" : "emerald"}>{company.category}</Badge>
               <h1 className="mt-3 text-4xl font-black">{company.name}</h1>

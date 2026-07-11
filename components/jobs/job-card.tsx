@@ -1,10 +1,10 @@
 import Link from "next/link";
-import { ArrowUpRight, CalendarClock, CheckCircle2, MapPin } from "lucide-react";
+import { ArrowUpRight, CalendarClock, CalendarDays, CheckCircle2, MapPin } from "lucide-react";
 import type { Job } from "@/types/job";
 import { Badge } from "@/components/ui/badge";
 import { CompanyLogo } from "@/components/jobs/company-logo";
 import { SaveJobButton } from "@/components/jobs/save-job-button";
-import { deadlineLabel, getFreshnessLabel, isEndingSoon, isNewOpening } from "@/utils/dates";
+import { deadlineLabel, getFreshnessLabel, isEndingSoon, isNewOpening, openingDateLabel } from "@/utils/dates";
 
 export function JobCard({ job }: { job: Job }) {
   const endingSoon = isEndingSoon(job.deadline);
@@ -14,11 +14,11 @@ export function JobCard({ job }: { job: Job }) {
   return (
     <article className="group rounded-xl border border-white/70 bg-[linear-gradient(135deg,_rgba(255,255,255,0.92),_rgba(240,253,250,0.78)_48%,_rgba(239,246,255,0.82))] p-5 shadow-soft backdrop-blur-xl transition hover:-translate-y-1 hover:shadow-glow dark:border-white/10 dark:bg-[linear-gradient(135deg,_rgba(15,23,42,0.9),_rgba(12,74,110,0.44)_48%,_rgba(49,46,129,0.34))]">
       <div className="flex items-start gap-4">
-        <CompanyLogo src={job.companyLogo} name={job.company} />
+        <CompanyLogo name={job.company} />
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">
             {endingSoon && <Badge tone="rose">Ending soon</Badge>}
-            {newOpening && <Badge tone="emerald">New</Badge>}
+            {newOpening && <Badge tone="emerald">New opening</Badge>}
             <Badge tone="sky">{job.confidenceScore}% verified</Badge>
             {recJob.matchType && (
               <Badge tone={recJob.matchType === "Best Match" ? "violet" : recJob.matchType === "Good Match" ? "emerald" : "sky"}>
@@ -53,7 +53,7 @@ export function JobCard({ job }: { job: Job }) {
         ))}
       </div>
 
-      <div className="mt-5 grid gap-2 text-sm text-slate-600 dark:text-slate-300 sm:grid-cols-2">
+      <div className="mt-5 grid gap-2 text-sm text-slate-600 dark:text-slate-300 sm:grid-cols-3">
         <span className="flex items-center gap-2">
           <MapPin className="h-4 w-4 text-coral" />
           {job.location}
@@ -61,6 +61,10 @@ export function JobCard({ job }: { job: Job }) {
         <span className="flex items-center gap-2">
           <CalendarClock className="h-4 w-4 text-iris" />
           {deadlineLabel(job.deadline)}
+        </span>
+        <span className="flex items-center gap-2 font-semibold">
+          <CalendarDays className="h-4 w-4 text-emerald-600" />
+          {openingDateLabel(job.openedAt)}
         </span>
       </div>
 

@@ -2,8 +2,20 @@
 
 import { useEffect, useState } from "react";
 import { Eye, Radio, Users } from "lucide-react";
+import { trackFirebaseVisitors } from "@/firebase/visitor-counter";
 
 type Summary = { totalVisitors: number; visitorsToday: number; onlineVisitors: number; totalPageViews: number; mode: string };
+
+const previewStorageKey = "career-analytics-preview";
+
+function nextPreviewSummary(): Summary {
+  const today = new Date().toISOString().slice(0, 10);
+  const stored = localStorage.getItem(previewStorageKey);
+  const previous = stored ? JSON.parse(stored) as { date?: string; pageViews?: number } : {};
+  const pageViews = previous.date === today ? (previous.pageViews ?? 0) + 1 : 1;
+  localStorage.setItem(previewStorageKey, JSON.stringify({ date: today, pageViews }));
+  return { totalVisitors: 1, visitorsToday: 1, onlineVisitors: 1, totalPageViews: pageViews, mode: "local-preview" };
+}
 
 export function VisitorCounter() {
   const [summary, setSummary] = useState<Summary | null>(null);
@@ -11,12 +23,22 @@ export function VisitorCounter() {
   useEffect(() => {
     const sessionId = sessionStorage.getItem("career-session") ?? crypto.randomUUID();
     sessionStorage.setItem("career-session", sessionId);
-    fetch("/api/analytics/visit", {
+    const preview = nextPreviewSummary();
+    setSummary(preview);
+    Promise.all([
+      trackFirebaseVisitors(),
+      fetch("/api/analytics/visit", {
       method: "POST",
       headers: { "content-type": "application/json" },
       body: JSON.stringify({ path: window.location.pathname, sessionId }),
       keepalive: true
-    }).finally(() => fetch("/api/analytics/summary").then((response) => response.json()).then(setSummary).catch(() => undefined));
+      })
+    ]).then(([firebaseVisitors]) => fetch("/api/analytics/summary")
+      .then((response) => response.json())
+      .then((data: Summary) => setSummary(data.mode === "database" ? data : firebaseVisitors && Number.isFinite(firebaseVisitors)
+        ? { ...preview, totalVisitors: firebaseVisitors, mode: "firebase" }
+        : preview))
+      .catch(() => undefined));
   }, []);
 
   const items = [
@@ -36,7 +58,8 @@ export function VisitorCounter() {
           </div>
         ))}
       </div>
-      {summary?.mode === "local-preview" && <p className="mx-auto mt-2 max-w-7xl text-xs text-slate-500">Visitor database is ready and will begin counting after Supabase is configured.</p>}
+      {summary?.mode === "firebase" && <p className="mx-auto mt-2 max-w-7xl text-xs text-slate-500">Shared visitor total powered by Firebase. Detailed daily analytics activate with Supabase.</p>}
+      {summary?.mode === "local-preview" && <p className="mx-auto mt-2 max-w-7xl text-xs text-slate-500">Preview count for this browser. Add valid Firebase or Supabase credentials to enable site-wide visitor analytics.</p>}
     </section>
   );
 }

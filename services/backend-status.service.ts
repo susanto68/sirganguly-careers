@@ -1,5 +1,6 @@
 import { getCompanies } from "@/services/company.service";
 import { getJobs } from "@/services/job.service";
+import { createSupabaseAdminClient } from "@/supabase/admin";
 
 type ProviderStatus = {
   name: string;
@@ -19,7 +20,7 @@ function provider(name: string, configured: boolean, readyDetail: string, fallba
 
 export async function getBackendStatus() {
   const [jobs, companies] = await Promise.all([getJobs(), getCompanies()]);
-  const supabaseConfigured = Boolean(process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY);
+  const supabaseConfigured = Boolean(createSupabaseAdminClient());
   const firebaseAdminConfigured = Boolean(
     process.env.FIREBASE_ADMIN_PROJECT_ID &&
       process.env.FIREBASE_ADMIN_CLIENT_EMAIL &&

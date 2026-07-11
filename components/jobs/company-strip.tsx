@@ -16,7 +16,7 @@ export function CompanyStrip({ companies }: { companies: Company[] }) {
         {companies.map((company) => (
           <Link key={company.id} href={`/company/${company.slug}`} className="glass rounded-xl p-5 transition hover:-translate-y-1 hover:shadow-glow">
             <div className="flex items-center gap-4">
-              <CompanyLogo src={company.logo} name={company.name} size="md" />
+              <CompanyLogo name={company.name} size="md" />
               <div>
                 <h3 className="font-black">{company.name}</h3>
                 <Badge tone={company.category === "Government" ? "amber" : "emerald"}>{company.category}</Badge>
