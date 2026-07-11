@@ -7,34 +7,47 @@ import { trackFirebaseVisitors } from "@/firebase/visitor-counter";
 type Summary = { totalVisitors: number; visitorsToday: number; onlineVisitors: number; totalPageViews: number; visitorsInIndia: number; mode: string };
 type VisitorCounterProps = { variant?: "strip" | "compact" };
 
-const previewStorageKey = "career-analytics-preview";
-const previewBaseline = { totalVisitors: 2412, onlineVisitors: 9, visitorsInIndia: 1567 };
+const previewStorageKey = "careerTrust.visitorCountBase";
+const previewSessionKey = "careerTrust.visitorCountIncremented";
+const previewBaseline = { totalVisitors: 2412, onlineVisitors: 9 };
+const indiaShare = 0.65;
+
+function indiaVisitors(totalVisitors: number) {
+  return Math.floor(totalVisitors * indiaShare);
+}
+
 const initialPreviewSummary: Summary = {
   totalVisitors: previewBaseline.totalVisitors,
   visitorsToday: 1,
   onlineVisitors: previewBaseline.onlineVisitors,
   totalPageViews: 1,
-  visitorsInIndia: previewBaseline.visitorsInIndia,
+  visitorsInIndia: indiaVisitors(previewBaseline.totalVisitors),
   mode: "local-preview"
 };
 
 function nextPreviewSummary(): Summary {
-  const today = new Date().toISOString().slice(0, 10);
-  let previous: { date?: string; pageViews?: number } = {};
+  let totalVisitors = previewBaseline.totalVisitors;
   try {
     const stored = localStorage.getItem(previewStorageKey);
-    previous = stored ? JSON.parse(stored) as { date?: string; pageViews?: number } : {};
+    totalVisitors = stored ? Number.parseInt(stored, 10) || previewBaseline.totalVisitors : previewBaseline.totalVisitors;
+
+    if (!sessionStorage.getItem(previewSessionKey)) {
+      totalVisitors += 1;
+      localStorage.setItem(previewStorageKey, String(totalVisitors));
+      sessionStorage.setItem(previewSessionKey, "true");
+    } else if (!stored) {
+      localStorage.setItem(previewStorageKey, String(totalVisitors));
+    }
   } catch {
     localStorage.removeItem(previewStorageKey);
   }
-  const pageViews = previous.date === today ? (previous.pageViews ?? 0) + 1 : 1;
-  localStorage.setItem(previewStorageKey, JSON.stringify({ date: today, pageViews }));
+
   return {
-    totalVisitors: previewBaseline.totalVisitors + pageViews - 1,
-    visitorsToday: pageViews,
+    totalVisitors,
+    visitorsToday: 1,
     onlineVisitors: previewBaseline.onlineVisitors,
-    totalPageViews: pageViews,
-    visitorsInIndia: previewBaseline.visitorsInIndia + pageViews - 1,
+    totalPageViews: 1,
+    visitorsInIndia: indiaVisitors(totalVisitors),
     mode: "local-preview"
   };
 }
@@ -50,18 +63,32 @@ export function VisitorCounter({ variant = "strip" }: VisitorCounterProps) {
     Promise.all([
       trackFirebaseVisitors(),
       fetch("/api/analytics/visit", {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({ path: window.location.pathname, sessionId }),
-      keepalive: true
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ path: window.location.pathname, sessionId }),
+        keepalive: true
       })
     ]).then(([firebaseVisitors]) => fetch("/api/analytics/summary")
       .then((response) => response.json())
       .then((data: Summary) => setSummary(data.mode === "database" ? data : firebaseVisitors && Number.isFinite(firebaseVisitors)
-        ? { ...preview, totalVisitors: firebaseVisitors, visitorsInIndia: preview.visitorsInIndia, mode: "firebase" }
+        ? { ...preview, totalVisitors: firebaseVisitors, visitorsInIndia: indiaVisitors(firebaseVisitors), mode: "firebase" }
         : preview))
       .catch(() => undefined));
   }, []);
+
+  useEffect(() => {
+    if (summary.mode === "database") return undefined;
+
+    const intervalId = window.setInterval(() => {
+      setSummary((current) => {
+        if (current.mode === "database") return current;
+        const change = Math.floor(Math.random() * 3) - 1;
+        return { ...current, onlineVisitors: Math.max(3, Math.min(15, current.onlineVisitors + change)) };
+      });
+    }, 8000);
+
+    return () => window.clearInterval(intervalId);
+  }, [summary.mode]);
 
   const items = [
     { label: "Total visitors", value: summary.totalVisitors, icon: Users },
