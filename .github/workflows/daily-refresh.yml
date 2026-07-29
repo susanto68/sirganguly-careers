@@ -1,0 +1,27 @@
+name: Daily verified job refresh
+
+on:
+  schedule:
+    - cron: "30 1 * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: career-daily-refresh
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Validate official source registry
+        run: python crawlers/run_daily.py --validate-only
+      - name: Trigger protected production refresh
+        env:
+          CAREER_SITE_URL: ${{ secrets.CAREER_SITE_URL }}
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+        run: python crawlers/run_daily.py --trigger
+

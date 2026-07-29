@@ -89,7 +89,7 @@ Vercel Cron is configured in `vercel.json`:
 Manual test:
 
 ```bash
-curl -H "x-cron-secret: YOUR_SECRET" http://localhost:3000/api/cron/daily-refresh
+curl -H "Authorization: Bearer YOUR_SECRET" http://localhost:3000/api/cron/daily-refresh
 ```
 
 ## AI Agent Architecture
@@ -105,6 +105,25 @@ Agents live in `/agents`:
 - Agent Orchestrator
 
 The current pipeline is production-shaped and runs safely with trusted seed data. Add live source adapters gradually inside `agents/search-agent.ts`.
+
+## Production automation
+
+Two independent schedules protect freshness:
+
+- Vercel Cron calls `/api/cron/daily-refresh` every day.
+- GitHub Actions validates the official-source registry and calls the same protected route every day.
+
+Add repository secrets `CAREER_SITE_URL=https://career.sirganguly.com` and the same `CRON_SECRET` used in Vercel. Apply `database/schema.sql`, `database/indexes.sql`, and `database/rls.sql` in Supabase before enabling production traffic.
+
+The refresh pipeline upserts verified jobs, distinguishes inserted and updated records, deactivates expired vacancies, and records each run. The public site never accepts direct crawler writes; ingestion is protected by `CRON_SECRET` and Supabase service-role access.
+
+Visitor analytics are cookie-free. The app hashes short-lived network and browser signals, stores no raw IP address, and records only path, coarse country, device, and browser. `/admin` reports whether analytics are database-backed or running in local preview mode.
+
+For live visitor totals, replace the placeholder values in `.env.local` and Vercel with a real `NEXT_PUBLIC_SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY`, then apply `database/migrations/20260711_visitor_analytics.sql` in the Supabase SQL editor. Until then, the homepage counter intentionally shows a labelled single-browser preview rather than pretending to report global visitors.
+
+CareerTrust also supports the same Firebase-first visitor total used by `books.sirganguly.com`. Add the Firebase web values already listed in `.env.example`, then deploy `firebase/firestore.rules` from the Firebase console. Firebase provides the shared total; Supabase provides the richer daily, online, country, device, and browser analytics.
+
+The Python source registry is intentionally conservative. A listed portal is not scraped automatically until a source-specific adapter has been reviewed for its public API, terms, robots policy, request rate, and stable notification format. Missing salary, deadline, age, or eligibility must remain empty rather than being invented.
 
 ## Deploy To Vercel
 

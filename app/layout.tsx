@@ -16,8 +16,12 @@ export const metadata: Metadata = {
   openGraph: {
     title: "CareerTrust AI",
     description: "Find verified jobs, internships, government opportunities, and official apply links.",
-    type: "website"
-  }
+    type: "website",
+    url: "/",
+    siteName: "CareerTrust AI"
+  },
+  alternates: { canonical: "/" },
+  robots: { index: true, follow: true }
 };
 
 export const viewport: Viewport = {
@@ -42,4 +46,3 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     </html>
   );
 }
-

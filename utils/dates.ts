@@ -1,4 +1,4 @@
-import { differenceInCalendarDays, formatDistanceToNowStrict, isAfter, parseISO } from "date-fns";
+import { differenceInCalendarDays, format, formatDistanceToNowStrict, isAfter, parseISO } from "date-fns";
 
 export function isEndingSoon(deadline?: string) {
   if (!deadline) return false;
@@ -20,6 +20,15 @@ export function deadlineLabel(deadline?: string) {
   if (!deadline) return "No official deadline";
   if (isExpired(deadline)) return "Expired";
   return `${formatDistanceToNowStrict(parseISO(deadline))} left`;
+}
+
+export function openingDateLabel(openedAt?: string) {
+  if (!openedAt) return "Opening date not provided";
+  try {
+    return `Opened ${format(parseISO(openedAt), "d MMM yyyy")}`;
+  } catch {
+    return "Opening date not provided";
+  }
 }
 
 export function getFreshnessLabel(lastCheckedAt?: string) {

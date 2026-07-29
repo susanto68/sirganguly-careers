@@ -20,6 +20,7 @@ export function Footer() {
           <Link href="/category/government-jobs">Government jobs</Link>
           <Link href="/category/abroad-jobs">Abroad jobs</Link>
           <Link href="/news">Industry news</Link>
+          <Link href="/admin">Portal status</Link>
         </div>
         <div className="grid gap-2 text-sm">
           <span className="font-bold">Trust</span>

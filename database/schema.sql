@@ -30,6 +30,12 @@ create table if not exists jobs (
   currency text,
   skills text[] not null default '{}',
   eligibility text,
+  qualification text,
+  experience text,
+  age_limit text,
+  official_notification_url text,
+  official_website_url text,
+  tags text[] not null default '{}',
   deadline date,
   opened_at date,
   job_type text not null,
@@ -108,4 +114,48 @@ create table if not exists notifications (
   body text not null,
   read_at timestamptz,
   created_at timestamptz not null default now()
+);
+
+create table if not exists articles (
+  id uuid primary key default uuid_generate_v4(),
+  slug text not null unique,
+  title text not null,
+  excerpt text,
+  content text,
+  category text not null default 'Career',
+  published boolean not null default false,
+  published_at timestamptz,
+  created_at timestamptz not null default now()
+);
+
+create table if not exists visitor_stats (
+  id uuid primary key default uuid_generate_v4(),
+  visitor_hash text not null,
+  session_hash text not null,
+  path text not null,
+  country_code text,
+  device_type text,
+  browser_name text,
+  viewed_at timestamptz not null default now()
+);
+
+create table if not exists crawler_runs (
+  id uuid primary key default uuid_generate_v4(),
+  source_name text not null,
+  status text not null,
+  discovered_count integer not null default 0,
+  accepted_count integer not null default 0,
+  rejected_count integer not null default 0,
+  error_message text,
+  started_at timestamptz not null default now(),
+  completed_at timestamptz
+);
+
+create table if not exists broken_links (
+  id uuid primary key default uuid_generate_v4(),
+  job_id text references jobs(id) on delete cascade,
+  url text not null,
+  http_status integer,
+  checked_at timestamptz not null default now(),
+  resolved_at timestamptz
 );
