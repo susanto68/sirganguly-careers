@@ -89,7 +89,7 @@ Vercel Cron is configured in `vercel.json`:
 Manual test:
 
 ```bash
-curl -H "x-cron-secret: YOUR_SECRET" http://localhost:3000/api/cron/daily-refresh
+curl -H "Authorization: Bearer YOUR_SECRET" http://localhost:3000/api/cron/daily-refresh
 ```
 
 ## AI Agent Architecture

@@ -7,10 +7,12 @@ export function requireCronSecret(request: Request) {
   }
 
   const url = new URL(request.url);
+  const authorization = request.headers.get("authorization");
   const headerSecret = request.headers.get("x-cron-secret");
   const querySecret = url.searchParams.get("secret");
+  const bearerSecret = authorization?.startsWith("Bearer ") ? authorization.slice("Bearer ".length) : null;
 
-  if (headerSecret !== configured && querySecret !== configured) {
+  if (bearerSecret !== configured && headerSecret !== configured && querySecret !== configured) {
     return NextResponse.json({ error: "Unauthorized cron request." }, { status: 401 });
   }
 
