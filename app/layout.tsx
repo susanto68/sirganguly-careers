@@ -4,6 +4,7 @@ import { ThemeProvider } from "@/components/layout/theme-provider";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { TopBanner } from "@/components/layout/top-banner";
+import { WhatsAppButton } from "@/components/layout/whatsapp-button";
 
 export const metadata: Metadata = {
   title: {
@@ -41,6 +42,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <main className="flex-1">{children}</main>
             <Footer />
           </div>
+          <WhatsAppButton />
         </ThemeProvider>
       </body>
     </html>

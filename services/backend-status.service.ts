@@ -33,7 +33,6 @@ export async function getBackendStatus() {
       process.env.NEXT_PUBLIC_FIREBASE_APP_ID
   );
   const openAiConfigured = Boolean(process.env.OPENAI_API_KEY);
-  const geminiConfigured = Boolean(process.env.GEMINI_API_KEY);
   const groqConfigured = Boolean(process.env.GROQ_API_KEY);
   const cronConfigured = Boolean(process.env.CRON_SECRET);
 
@@ -43,11 +42,10 @@ export async function getBackendStatus() {
     provider("Firebase admin", firebaseAdminConfigured, "Protected APIs can verify Firebase ID tokens.", "Saved jobs API will reject cloud saves until admin keys are added."),
     provider("Groq", groqConfigured, "Groq is available as the fast AI reasoning provider.", "AI summaries use the safe local pipeline until the key is added."),
     provider("OpenAI", openAiConfigured, "OpenAI can power embeddings and semantic search.", "Search is keyword plus trust ranking until the key is added."),
-    provider("Gemini", geminiConfigured, "Gemini is available for extraction and student summaries.", "Extraction uses trusted source data until the key is added."),
     provider("Vercel Cron", cronConfigured, "Daily refresh route can be protected with CRON_SECRET.", "Cron route exists, but secret must be added in Vercel.")
   ];
 
-  const configuredAiProviders = [groqConfigured, openAiConfigured, geminiConfigured].filter(Boolean).length;
+  const configuredAiProviders = [groqConfigured, openAiConfigured].filter(Boolean).length;
 
   return {
     mode: supabaseConfigured ? "database" : "seed-fallback",
@@ -76,7 +74,7 @@ export async function getBackendStatus() {
     },
     ai: {
       configuredProviders: configuredAiProviders,
-      primaryBrain: groqConfigured ? "Groq" : openAiConfigured ? "OpenAI" : geminiConfigured ? "Gemini" : "Local trust pipeline"
+      primaryBrain: groqConfigured ? "Groq" : openAiConfigured ? "OpenAI" : "Local trust pipeline"
     },
     providers: providerStatuses
   };
