@@ -47,7 +47,7 @@ export async function getJobs(filters: JobFilters = {}) {
       )
       .eq("is_active", true)
       .order("priority_score", { ascending: false })
-      .limit(80);
+      .limit(1000); // Supabase's default max rows per request
 
     if (filters.category) query = query.contains("categories", [filters.category]);
     if (filters.remote) query = query.eq("is_remote", true);
