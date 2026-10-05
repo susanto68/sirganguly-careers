@@ -7,7 +7,7 @@ create table if not exists companies (
   slug text not null unique,
   logo text,
   career_url text not null,
-  domain text not null unique,
+  domain text not null,
   verified boolean not null default true,
   category text not null,
   description text,
