@@ -6,6 +6,9 @@ import { isSuspiciousUrl, normalizeDomain, sameRegistrableDomain } from "@/utils
 const trustedDomains = [
   ...trustedCompanies.map((company) => company.domain),
   ...trustedSourceRegistry.map((source) => source.domain),
+  // Public job-board APIs used by services/aggregation.service.ts; their listings link to the board's own page.
+  "remotive.com",
+  "arbeitnow.com",
   "greenhouse.io",
   "lever.co",
   "myworkdayjobs.com",
