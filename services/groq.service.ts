@@ -1,5 +1,11 @@
 import Groq from "groq-sdk";
 
+// gpt-oss-20b is a low-cost reasoning model; keep reasoning minimal and leave headroom
+// in max_tokens so reasoning never consumes the whole budget and leaves an empty reply.
+const GROQ_MODEL = "openai/gpt-oss-20b";
+const REASONING_HEADROOM = 200;
+const reasoningParams = { reasoning_effort: "low", include_reasoning: false } as Record<string, unknown>;
+
 // Fast in-memory cache for API route responses to reduce token costs and eliminate latency
 const responseCache = new Map<string, { response: string; expiry: number }>();
 const CACHE_TTL = 30 * 60 * 1000; // 30 minutes cache duration
@@ -35,15 +41,15 @@ export async function askGroq(
   try {
     const groq = new Groq({ apiKey });
     
-    // Extremely optimized prompts for Llama-3.1-8b-instant for fast, low-token responses
     const response = await groq.chat.completions.create({
-      model: "llama-3.1-8b-instant",
+      model: GROQ_MODEL,
       messages: [
         { role: "system", content: systemPrompt },
         { role: "user", content: userPrompt }
       ],
       temperature: 0.1, // High determinism
-      max_tokens: maxTokens
+      max_tokens: maxTokens + REASONING_HEADROOM,
+      ...reasoningParams
     });
 
     const reply = response.choices[0]?.message?.content?.trim() || null;
@@ -75,10 +81,11 @@ export async function chatWithGroq(
   try {
     const groq = new Groq({ apiKey });
     const response = await groq.chat.completions.create({
-      model: "llama-3.1-8b-instant",
+      model: GROQ_MODEL,
       messages,
       temperature: 0.5,
-      max_tokens: maxTokens
+      max_tokens: maxTokens + REASONING_HEADROOM,
+      ...reasoningParams
     });
     return response.choices[0]?.message?.content?.trim() || null;
   } catch (error) {
